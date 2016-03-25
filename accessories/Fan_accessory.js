@@ -1,3 +1,4 @@
+var PythonShell = require('python-shell');
 // HomeKit types required
 var types = require("./types.js")
 var exports = module.exports = {};
@@ -75,7 +76,18 @@ exports.accessory = {
       designedMaxLength: 255   
     },{
       cType: types.POWER_STATE_CTYPE,
-      onUpdate: function(value) { console.log("Change:",value); execute("Fan", "Fan Power", value); },
+      onUpdate: function(value) {
+                if (value) {
+                        PythonShell.run('fan1.py', function (err) {
+                                console.log('On Success');
+                        });
+                } else {
+                        PythonShell.run('fan0.py', function (err) {
+                                console.log("Off Success");
+
+                        });
+                }
+      },
       perms: ["pw","pr","ev"],
       format: "bool",
       initialValue: false,
